@@ -1,0 +1,15 @@
+flutter_native_splash:
+  color: "#222048"
+  image: "assets/visamate_splash.png"
+  # branding: "assets/visamate_splash_dark@2x.png"
+  color_dark: "#222048"
+  image_dark: "assets/visamate_splash.png"
+  # branding_dark: "assets/visamate_splash_dark@2x.png"
+  android_12:
+    image: "assets/visamate_splash.png"
+    icon_background_color: "#222048"
+    image_dark: "assets/visamate_splash.png"
+    icon_background_color_dark: "#222048"
+  web: true
+
+ 

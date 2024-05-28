@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "183560475594",
+    "project_id": "visamate",
+    "storage_bucket": "visamate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183560475594:android:ea880f160f0c8c582db533",
+        "android_client_info": {
+          "package_name": "com.example.visamate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtyo-AfTolvVa34uTmCgCFsPUS2YnxJV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

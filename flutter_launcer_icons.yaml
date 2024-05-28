@@ -1,0 +1,31 @@
+  dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  adaptive_icon_background: "#222048"
+  adaptive_icon_foreground: "#222048"
+  background: "#222048"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/app_icon/visamate_icon_dark@2x.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/app_icon/visamate_icon_dark@2x.png"
+    background_color: "#222048"
+    theme_color: "#222048"
+  windows:
+    generate: true
+    image_path: "assets/app_icon/visamate_icon_dark@2x.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/app_icon/visamate_icon_dark@2x.png"
+  android:
+    generate: true
+    image_path: "assets/app_icon/visamate_icon_dark@2x.png"
+    background_color: "#222048"
+    theme_color: "#222048"
+  ios:
+    remove_alpha_ios: true 

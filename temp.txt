@@ -1,0 +1,173 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:visamate/component/Form/FormText.dart';
+import '../../component/Form/TextAction.dart';
+import '../../component/form/CustomButton.dart';
+
+class TimerSetupScreen extends StatefulWidget {
+  @override
+  _TimerSetupScreenState createState() => _TimerSetupScreenState();
+}
+
+class _TimerSetupScreenState extends State<TimerSetupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _activityController = TextEditingController();
+  int _duration = 0;
+  TimeOfDay _startTime = TimeOfDay.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Timer Setup'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FormText(text: 'Activity Name', controller: _activityController,),             
+               DurationPicker(
+                text: '$_duration',
+              ),
+                DurationPicker(text: 'Duration: ${_duration}'),
+              // TimePicker(text: '${_startTime.format(context)}'),
+              SizedBox(height: 20),
+              FormButton(
+                text: 'Start Timer',
+                action: () {
+                  // if (_formKey.currentState.validate()) {
+                  // Navigate to TimerScreen with user inputs
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TimerScreen(
+                        activity: _activityController.text,
+                        duration: _duration,
+                        startTime: _startTime,
+                      ),
+                    ),
+                  );
+                  // }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDurationPicker(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: CupertinoPicker(
+        scrollController: FixedExtentScrollController(initialItem: _duration),
+        onSelectedItemChanged: (value) {
+          setState(() {
+            _duration = value;
+          });
+        },
+        itemExtent: 32,
+        children: List.generate(121, (index) => Text('$index')),
+      ),
+    );
+  }
+
+  // Widget _buildStartTimePicker(BuildContext context) {
+  //   return SizedBox(
+  //     height: 200,
+  //     child: CupertinoDatePicker(
+  //       mode: CupertinoDatePickerMode.time,
+  //       initialDateTime: DateTime.now(),
+  //       onDateTimeChanged: (DateTime dateTime) {
+  //         setState(() {
+  //           _startTime = TimeOfDay.fromDateTime(dateTime);
+  //         });
+  //       },
+  //     ),
+  //   );
+  // }
+}
+
+class TimerScreen extends StatefulWidget {
+  final String? activity;
+  final int? duration;
+  final TimeOfDay? startTime;
+
+  TimerScreen({this.activity, this.duration, this.startTime});
+
+  @override
+  _TimerScreenState createState() => _TimerScreenState();
+}
+
+class _TimerScreenState extends State<TimerScreen> {
+  late Timer _timer;
+  late int _remainingTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    DateTime now = DateTime.now();
+    DateTime startTime = DateTime(now.year, now.month, now.day,
+        widget.startTime!.hour, widget.startTime!.minute);
+    DateTime endTime = startTime.add(Duration(minutes: widget.duration!));
+    _remainingTime = endTime.difference(now).inSeconds;
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_remainingTime > 0) {
+          _remainingTime--;
+        } else {
+          _timer.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Timer: ${widget.activity}'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Time Left: ${_formatTime(_remainingTime)}',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Current Time: ${TimeOfDay.now().hour}:${TimeOfDay.now().minute}',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: _remainingTime < 60
+          ? Colors.red
+          : Theme.of(context).colorScheme.background,
+    );
+  }
+
+  String _formatTime(int timeInSeconds) {
+    Duration duration = Duration(seconds: timeInSeconds);
+    return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+}
+ 
